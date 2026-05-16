@@ -508,6 +508,11 @@ function calculate(){
     let waterMinusMoisture =
     water - moisture;
 
+    // Weight Water Total
+
+let weightWaterTotal =
+waterMinusMoisture * batch;
+
     document
     .getElementById("result")
     .style.display = "block";
@@ -537,6 +542,10 @@ function calculate(){
         <strong>Batch :</strong>
         ${batch}
         <br>
+ 
+        <strong>Weight Water Total :</strong>
+${weightWaterTotal.toFixed(2)} KG
+<br>
 
         <strong>Target Total :</strong>
         ${grandTotal.toFixed(2)} KG
