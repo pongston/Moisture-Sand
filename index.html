@@ -1,559 +1,457 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-<title>Moisture Calculator</title>
-
-<!-- Bootstrap -->
-
-<link
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
-
-<!-- Bootstrap Icons -->
-
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-<style>
-
-/* Reset */
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-/* Body */
-
-body{
-
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:15px;
-
-    overflow-x:hidden;
-
-    font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-    background:
-    linear-gradient(
-        135deg,
-        #dff6e3,
-        #cdeed4,
-        #b7e6c0
-    );
-}
-
-/* Floating Glass Card */
-
-.glass-card{
-
-    width:100%;
-    max-width:520px;
-
-    padding:28px;
-
-    border-radius:28px;
-
-    background:
-    rgba(255,255,255,0.38);
-
-    backdrop-filter:blur(18px);
-
-    border:
-    1px solid rgba(255,255,255,0.35);
-
-    box-shadow:
-    0 8px 30px rgba(0,0,0,0.12);
-
-    animation:
-    fadeIn 0.6s ease;
-}
-
-/* Animation */
-
-@keyframes fadeIn{
-
-    from{
-        opacity:0;
-        transform:translateY(20px);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>โปรแกรมคำนวณความชื้น (Moisture Calculator)</title>
+  <style>
+    :root {
+      --bg-color: #F2F2F7;
+      --card-bg: #FFFFFF;
+      --text-color: #000000;
+      --secondary-text: #8E8E93;
+      --accent-color: #007AFF;
+      --accent-hover: #0056B3;
+      --border-color: #C6C6C8;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* Title */
-
-.title{
-
-    text-align:center;
-    margin-bottom:24px;
-}
-
-.title h1{
-
-    font-size:32px;
-    font-weight:700;
-
-    color:#198754;
-}
-
-.title p{
-
-    color:#4f6f57;
-    margin-top:5px;
-}
-
-/* Labels */
-
-.form-label{
-
-    font-weight:600;
-
-    color:#2f4f36;
-
-    margin-bottom:8px;
-}
-
-/* Inputs */
-
-.form-control{
-
-    width:100%;
-
-    height:56px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    rgba(255,255,255,0.75);
-
-    padding:12px 16px;
-
-    font-size:17px;
-
-    box-shadow:
-    inset 2px 2px 6px rgba(0,0,0,0.05);
-
-    transition:0.2s;
-}
-
-.form-control:focus{
-
-    outline:none;
-
-    box-shadow:
-    0 0 0 4px rgba(25,135,84,0.15);
-}
-
-/* Button */
-
-.btn-calc{
-
-    width:100%;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #34c759,
-        #198754
-    );
-
-    color:white;
-
-    font-size:20px;
-    font-weight:bold;
-
-    transition:0.25s;
-}
-
-/* Hover */
-
-.btn-calc:hover{
-
-    transform:
-    translateY(-2px);
-
-    box-shadow:
-    0 10px 20px rgba(25,135,84,0.25);
-}
-
-/* Active */
-
-.btn-calc:active{
-
-    transform:scale(0.98);
-}
-
-/* Result */
-
-.result-box{
-
-    display:none;
-
-    margin-top:24px;
-
-    padding:22px;
-
-    border-radius:22px;
-
-    background:
-    rgba(255,255,255,0.55);
-
-    border:
-    1px solid rgba(255,255,255,0.4);
-
-    backdrop-filter:blur(10px);
-
-    line-height:2;
-
-    font-size:18px;
-
-    color:#1d3c28;
-
-    word-break:break-word;
-}
-
-/* Result Title */
-
-.result-title{
-
-    font-size:22px;
-    font-weight:bold;
-
-    color:#198754;
-
-    margin-bottom:10px;
-}
-
-/* Footer */
-
-.footer{
-
-    text-align:center;
-
-    margin-top:18px;
-
-    color:#557b60;
-
-    font-size:14px;
-}
-
-/* Tablet */
-
-@media (max-width:768px){
-
-    .glass-card{
-
-        max-width:95%;
-        padding:24px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .title h1{
-
-        font-size:28px;
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 16px;
+      padding-top: calc(16px + env(safe-area-inset-top));
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
-    .form-control{
-
-        height:54px;
-        font-size:16px;
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .btn-calc{
-
-        height:54px;
-        font-size:18px;
-    }
-}
-
-/* Mobile */
-
-@media (max-width:480px){
-
-    body{
-
-        padding:10px;
-        align-items:flex-start;
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 8px 0;
     }
 
-    .glass-card{
-
-        padding:20px;
-
-        border-radius:22px;
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1C1C1E;
     }
 
-    .title h1{
-
-        font-size:24px;
+    .header p {
+      font-size: 13px;
+      color: var(--secondary-text);
+      margin-top: 2px;
     }
 
-    .title p{
-
-        font-size:14px;
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
     }
 
-    .form-control{
-
-        height:50px;
-
-        font-size:15px;
-
-        border-radius:16px;
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1C1C1E;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .btn-calc{
-
-        height:52px;
-
-        font-size:17px;
-
-        border-radius:18px;
+    .badge {
+      background: #E5F1FF;
+      color: var(--accent-color);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 500;
     }
 
-    .result-box{
-
-        font-size:16px;
-
-        line-height:1.8;
+    /* Input Controls */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
     }
-}
 
-/* Large Screen */
-
-@media (min-width:1200px){
-
-    .glass-card{
-
-        max-width:560px;
+    .input-group label {
+      font-size: 13px;
+      color: var(--secondary-text);
+      font-weight: 500;
     }
-}
 
-</style>
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      outline: none;
+      background: #FAFAFC;
+      transition: all 0.2s;
+    }
 
+    .input-field:focus {
+      border-color: var(--accent-color);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    }
+
+    /* Grid Layout for Samples */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: #E9E9EB;
+      color: #000000;
+    }
+
+    .btn-secondary:hover {
+      background-color: #D1D1D6;
+    }
+
+    .btn-danger {
+      background-color: #FF3B30;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #D63027;
+    }
+
+    /* Results Table */
+    .result-card {
+      border: 2px solid var(--accent-color);
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #E5E5EA;
+      font-size: 14px;
+    }
+
+    .result-row:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      color: var(--secondary-text);
+    }
+
+    .result-value {
+      font-weight: 600;
+      color: #1C1C1E;
+    }
+
+    /* Highlight Box for Final Moisture Average */
+    .highlight-box {
+      background: linear-gradient(135deg, #007AFF, #0056B3);
+      color: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .highlight-title {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .highlight-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .formula-note {
+      font-size: 11px;
+      color: var(--secondary-text);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="glass-card">
-
-    <div class="title">
-
-        <h1>
-            <i class="bi bi-droplet-half"></i>
-            Moisture Calculator
-        </h1>
-
-        <p>
-            Responsive Modern UI
-        </p>
-
+  <div class="app-container">
+    
+    <!-- Header -->
+    <div class="header">
+      <h1>Moisture Calculator</h1>
+      <p>โปรแกรมคำนวณและเฉลี่ยค่าความชื้น</p>
     </div>
 
-    <div class="mb-3">
+    <!-- Input Section -->
+    <div class="card">
+      <div class="card-title">
+        <span>กำหนดค่าข้อมูล</span>
+        <span class="badge">สุ่มน้ำหนัก 2000-2010g</span>
+      </div>
 
-        <label class="form-label">
-            Sand (Kg)
-        </label>
+      <!-- Target Moisture E Input -->
+      <div class="input-group">
+        <label for="targetMoisture">ค่า Moisture เฉลี่ยที่ต้องการ (E) %</label>
+        <input type="number" id="targetMoisture" class="input-field" step="0.01" min="0" inputmode="decimal" placeholder="เช่น 5.00" value="5.00">
+      </div>
 
-        <input
-            type="number"
-            id="x"
-            class="form-control"
-            placeholder="กรอกน้ำหนักทราย">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label class="form-label">
-            Moisture (%)
-        </label>
-
-        <input
-            type="number"
-            id="y"
-            class="form-control"
-            placeholder="กรอกค่า Moisture">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label class="form-label">
-            Water (Kg)
-        </label>
-
-        <input
-            type="number"
-            id="water"
-            class="form-control"
-            placeholder="กรอกน้ำหนักน้ำ">
-
-    </div>
-
-    <div class="mb-4">
-
-        <label class="form-label">
-            Batch (คิว)
-        </label>
-
-        <input
-            type="number"
-            id="batch"
-            class="form-control"
-            placeholder="กรอกจำนวน Batch">
-
-    </div>
-
-    <button
-        class="btn-calc"
-        onclick="calculate()">
-
-        <i class="bi bi-lightning-charge-fill"></i>
-        Calculate
-
-    </button>
-
-    <div
-        class="result-box"
-        id="result">
-    </div>
-
-    <div class="footer">
-
-        รองรับ iPhone • Android • iPad
-
-    </div>
-
-</div>
-
-<script>
-
-function calculate(){
-
-    let x =
-    parseFloat(
-        document.getElementById("x").value
-    ) || 0;
-
-    let yPercent =
-    parseFloat(
-        document.getElementById("y").value
-    ) || 0;
-
-    let water =
-    parseFloat(
-        document.getElementById("water").value
-    ) || 0;
-
-    let batch =
-    parseFloat(
-        document.getElementById("batch").value
-    ) || 0;
-
-    let y = yPercent / 100;
-
-    // Moisture
-
-    let moisture =
-    x * (
-        y +
-        Math.pow(y,2) +
-        Math.pow(y,3)
-    );
-
-    // Total / Batch
-
-    let totalPerBatch =
-    x + moisture;
-
-    // Grand Total
-
-    let grandTotal =
-    totalPerBatch * batch;
-
-    // Water - Moisture
-
-    let waterMinusMoisture =
-    water - moisture;
-
-    // Weight Water Total
-
-let weightWaterTotal =
-waterMinusMoisture * batch;
-
-    document
-    .getElementById("result")
-    .style.display = "block";
-
-    document
-    .getElementById("result")
-    .innerHTML = `
-
-        <div class="result-title">
-            📊 Result
+      <!-- Raw Weights A1 & A2 Input -->
+      <div class="grid-2">
+        <div class="input-group">
+          <label for="inputA1">A1 (ก่อนอบ #1)</label>
+          <input type="number" id="inputA1" class="input-field" step="1" inputmode="numeric" placeholder="2000-2010" value="2005">
         </div>
+        <div class="input-group">
+          <label for="inputA2">A2 (ก่อนอบ #2)</label>
+          <input type="number" id="inputA2" class="input-field" step="1" inputmode="numeric" placeholder="2000-2010" value="2008">
+        </div>
+      </div>
 
-        <hr>
+      <!-- Buttons -->
+      <div class="button-group" style="margin-top: 8px;">
+        <button class="btn btn-secondary" onclick="randomizeA1A2()">
+          🎲 สุ่มค่า A1 และ A2 (2000 - 2010)
+        </button>
+        <button class="btn btn-primary" onclick="calculateMoisture()">
+          ⚡ Calculate (คำนวณ)
+        </button>
+        <button class="btn btn-danger" onclick="resetForm()">
+          🔄 Reset (ล้างข้อมูล)
+        </button>
+      </div>
+    </div>
 
-        <strong>Moisture :</strong>
-        ${moisture.toFixed(2)} KG
-        <br>
+    <!-- Output Section -->
+    <div class="card result-card" id="resultsSection">
+      <div class="card-title">
+        <span>ผลการคำนวณ</span>
+        <span class="badge" style="background:#E5F9E7; color:#34C759;">สำเร็จ</span>
+      </div>
 
-        <strong>Water - Moisture :</strong>
-        ${waterMinusMoisture.toFixed(2)} KG
-        <br>
+      <!-- Sample 1 Output -->
+      <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #E5E5EA;">
+        <div style="font-weight: 600; font-size: 13px; color: var(--accent-color); margin-bottom: 4px;">ตัวอย่างที่ 1</div>
+        <div class="result-row">
+          <span class="result-label">A1 (ก่อนอบ):</span>
+          <span class="result-value" id="resA1">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">B1 (หลังอบ):</span>
+          <span class="result-value" id="resB1">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">C1 (ผลต่าง A1 - B1):</span>
+          <span class="result-value" id="resC1">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">D1 (Moisture %):</span>
+          <span class="result-value" id="resD1">-</span>
+        </div>
+      </div>
 
-        <strong>Total / Batch :</strong>
-        ${totalPerBatch.toFixed(2)} KG
-        <br>
+      <!-- Sample 2 Output -->
+      <div style="margin-bottom: 12px;">
+        <div style="font-weight: 600; font-size: 13px; color: var(--accent-color); margin-bottom: 4px;">ตัวอย่างที่ 2</div>
+        <div class="result-row">
+          <span class="result-label">A2 (ก่อนอบ):</span>
+          <span class="result-value" id="resA2">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">B2 (หลังอบ):</span>
+          <span class="result-value" id="resB2">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">C2 (ผลต่าง A2 - B2):</span>
+          <span class="result-value" id="resC2">-</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">D2 (Moisture %):</span>
+          <span class="result-value" id="resD2">-</span>
+        </div>
+      </div>
 
-        <strong>Batch :</strong>
-        ${batch}
-        <br>
- 
-        <strong>Weight Water Total :</strong>
-${weightWaterTotal.toFixed(2)} KG
-<br>
+      <!-- Highlight Average -->
+      <div class="highlight-box">
+        <div class="highlight-title">ค่า Moisture เฉลี่ยรวม (E)</div>
+        <div class="highlight-value" id="resE">0.00 %</div>
+      </div>
+    </div>
 
-        <strong>Target Total :</strong>
-        ${grandTotal.toFixed(2)} KG
+    <div class="formula-note">
+      สูตร: C = A - B | D = (C ÷ A) × 100 | E = (D1 + D2) ÷ 2
+    </div>
 
-    `;
-}
+  </div>
 
-</script>
+  <script>
+    // สุ่มค่าจำนวนเต็มระหว่าง min - max
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
+    function getRandomA() {
+      return randInt(2000, 2010);
+    }
+
+    // คำนวณ D ตามสูตร D = (C / A) * 100
+    function calcD(A, B) {
+      return ((A - B) / A) * 100;
+    }
+
+    // หาคู่ B1, B2 (จำนวนเต็ม) ที่ทำให้ค่าเฉลี่ย E ใกล้เคียงเป้าหมายที่สุด
+    function pickBPair(A1, A2, E) {
+      const variation = (Math.random() * 0.3 - 0.15);
+      const targetD1 = E + variation;
+      const targetD2 = E - variation;
+
+      const idealB1 = A1 * (1 - targetD1 / 100);
+      const idealB2 = A2 * (1 - targetD2 / 100);
+      const c1 = Math.round(idealB1);
+      const c2 = Math.round(idealB2);
+
+      let best = [];
+      let bestErr = Infinity;
+      for (let b1 = c1 - 3; b1 <= c1 + 3; b1++) {
+        for (let b2 = c2 - 3; b2 <= c2 + 3; b2++) {
+          if (b1 <= 0 || b2 <= 0 || b1 >= A1 || b2 >= A2) continue;
+          const err = Math.abs((calcD(A1, b1) + calcD(A2, b2)) / 2 - E);
+          if (err < bestErr - 1e-9) { bestErr = err; best = [[b1, b2]]; }
+          else if (Math.abs(err - bestErr) <= 1e-9) { best.push([b1, b2]); }
+        }
+      }
+      if (!best.length) return [c1, c2];
+      return best[randInt(0, best.length - 1)];
+    }
+
+    // ปุ่มสุ่ม A1 และ A2
+    function randomizeA1A2() {
+      document.getElementById('inputA1').value = getRandomA();
+      document.getElementById('inputA2').value = getRandomA();
+      calculateMoisture();
+    }
+
+    // ฟังก์ชันคำนวณหลัก
+    function calculateMoisture() {
+      const targetE = parseFloat(document.getElementById('targetMoisture').value);
+      let A1 = parseInt(document.getElementById('inputA1').value);
+      let A2 = parseInt(document.getElementById('inputA2').value);
+
+      if (isNaN(targetE) || targetE <= 0) {
+        alert('กรุณากรอกค่า Moisture เฉลี่ย (E) ที่ถูกต้อง');
+        return;
+      }
+
+      if (isNaN(A1) || A1 < 2000 || A1 > 2010) {
+        A1 = getRandomA();
+        document.getElementById('inputA1').value = A1;
+      }
+      if (isNaN(A2) || A2 < 2000 || A2 > 2010) {
+        A2 = getRandomA();
+        document.getElementById('inputA2').value = A2;
+      }
+
+      // หา B1, B2 เป็นจำนวนเต็ม
+      const [B1, B2] = pickBPair(A1, A2, targetE);
+
+      // คำนวณผลต่าง C = A - B (เป็นจำนวนเต็ม)
+      const C1 = A1 - B1;
+      const C2 = A2 - B2;
+
+      // คำนวณ D1, D2 % ให้แสดงผลเป็นทศนิยม 2 ตำแหน่ง (.toFixed(2))
+      const D1 = calcD(A1, B1);
+      const D2 = calcD(A2, B2);
+
+      // คำนวณค่าเฉลี่ย E เป็นทศนิยมสองตำแหน่ง
+      const calculatedE = ((D1 + D2) / 2);
+
+      // แสดงผลลัพธ์ (A, B, C เป็นจำนวนเต็ม | D และ E เป็นทศนิยม 2 ตำแหน่ง)
+      document.getElementById('resA1').textContent = A1 + ' g';
+      document.getElementById('resB1').textContent = B1 + ' g';
+      document.getElementById('resC1').textContent = C1 + ' g';
+      document.getElementById('resD1').textContent = D1.toFixed(2) + ' %';
+
+      document.getElementById('resA2').textContent = A2 + ' g';
+      document.getElementById('resB2').textContent = B2 + ' g';
+      document.getElementById('resC2').textContent = C2 + ' g';
+      document.getElementById('resD2').textContent = D2.toFixed(2) + ' %';
+
+      document.getElementById('resE').textContent = calculatedE.toFixed(2) + ' %';
+    }
+
+    // ปุ่ม Reset
+    function resetForm() {
+      document.getElementById('targetMoisture').value = '5.00';
+      document.getElementById('inputA1').value = '2005';
+      document.getElementById('inputA2').value = '2008';
+      calculateMoisture();
+    }
+
+    // เรียกคำนวณครั้งแรกเมื่อเปิดหน้าเว็บ
+    window.onload = function() {
+      calculateMoisture();
+    };
+  </script>
 </body>
 </html>
